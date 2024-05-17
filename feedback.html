@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - I-SIU</title>
+    <style>
+        body {
+            background-color: #302c2c;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .feedback-container {
+            text-align: center;
+            padding: 80px;
+            background-color: #080434;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .feedback-container h1 {
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 100px;
+            margin: 20px auto;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .star {
+            font-size: 40px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        .stars label:hover,
+        .stars label:hover ~ label,
+        input[type="radio"]:checked ~ label {
+            color: #ffd700;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #fff;
+            color: #080434;
+            resize: none;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .skip-button {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .submit-button {
+            background-color: #555;
+            color: #fff;
+        }
+
+
+        .thankyou-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background-color: #080434;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        #thankyou:target .feedback-container {
+            display: none;
+        }
+
+        #thankyou:target .thankyou-message {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="thankyou">
+        <div class="feedback-container">
+            <h1>How's your experience with I-SIU?</h1>
+            <a href="https://imgbb.com/"><img src="https://i.ibb.co/xXDzjQ6/Screenshot-2024-04-27-172622.png" alt="Screenshot-2024-04-27-172622" border="0" /></a>
+            <form action="#thankyou" method="post">
+                <div class="stars">
+                    <input type="radio" id="star5" name="rating" value="5" />
+                    <label for="star5" class="star">&#9733;</label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4" class="star">&#9733;</label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3" class="star">&#9733;</label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2" class="star">&#9733;</label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1" class="star">&#9733;</label>
+                </div>
+                <textarea name="review" placeholder="Type your review here..."></textarea>
+                <div class="actions">
+                    <button type="button" class="skip-button">Skip</button>
+                    <button type="submit" class="submit-button">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="thankyou-message">
+            That's all, Thank you for visiting our Website!!
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+

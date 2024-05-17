@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-pic {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .profile-info h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .profile-info p {
+            margin: 5px 0 0;
+            color: #aaa;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #282828;
+            color: white;
+            cursor: pointer;
+        }
+
+        .nav-button.active {
+            background-color: #3b3bff;
+        }
+
+        .nav-button:hover {
+            background-color: #3b3bff;
+        }
+
+        .history {
+            margin-top: 30px;
+        }
+
+        .history h2 {
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            background-color: #333;
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .logout-message {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <img src="johncena.png" alt="Profile Picture" class="profile-pic">
+            <div class="profile-info">
+                <h1>Bing Chillin John Cena</h1>
+                <p>johncena_bingchilling@china.com</p>
+            </div>
+        </div>
+        <div class="navbar">
+            <button class="nav-button" id="home-button">Home</button>
+            <button class="nav-button" id="logout-button">Log out</button>
+        </div>
+        <div class="history" id="history-section">
+            <h2>History</h2>
+            <div class="history-item"></div>
+            <div class="history-item"></div>
+            <div class="history-item"></div>
+            <div class="history-item"></div>
+        </div>
+        <div class="logout-message" id="logout-message" style="display: none;">
+            <h2>You have logged out.</h2>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navButtons = document.querySelectorAll(".nav-button");
+            const homeButton = document.getElementById("home-button");
+            const logoutButton = document.getElementById("logout-button");
+            const historySection = document.getElementById("history-section");
+            const logoutMessage = document.getElementById("logout-message");
+
+            navButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    navButtons.forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+                });
+            });
+
+            homeButton.addEventListener("click", function() {
+                window.location.href = 'home.html';
+            });
+
+            logoutButton.addEventListener("click", function() {
+                historySection.style.display = "none";
+                logoutMessage.style.display = "block";
+            });
+        });
+    </script>
+</body>
+</html>

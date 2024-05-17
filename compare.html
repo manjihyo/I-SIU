@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Parts</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: #fff;
+            margin-right: 20px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav button {
+            color: #fff;
+            background-color: #444;
+            border: 2px solid #555;
+            border-radius: 5px;
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        nav button:hover {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        nav button.active {
+            background-color: #00cccc;
+            border-color: #00cccc;
+        }
+
+        .note {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .comparison {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .part {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+        }
+
+        .component-info {
+            background-color: #fff;
+            color: #000;
+            border-radius: 5px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .component-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .specs {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .specs li {
+            margin: 5px 0;
+        }
+
+        .comparison-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #00cccc;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .highlight-blue {
+            color: #00cccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">👁️</div>
+        <nav>
+            <button onclick="window.location.href='home.html'" >HOME</button>
+            <button onclick="window.location.href='create.html'">CREATE</button>
+            <button onclick="window.location.href='prebuilt.html'">PRE-BUILT PC</button>
+            <button onclick="window.location.href='compare.html'"class="active">COMPARE PARTS</button>
+        </nav>
+    </header>
+    <main>
+        <div class="note">Note: Blue highlight on the component part means that it is statistically better</div>
+        <div class="comparison">
+            <div class="part">
+                <div class="search-container">
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="component-info highlight-blue" id="component1">
+
+                </div>
+            </div>
+            <div class="part">
+                <div class="search-container">
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="component-info" id="component2">
+
+                </div>
+            </div>
+        </div>
+        <div class="comparison-title" id="comparisonTitle">
+
+        </div>
+    </main>
+    <script>
+
+        function fetchComponentInfo(searchQuery) {
+
+
+            const dummyData = {
+                "GeForce RTX 3060": {
+                    title: "GeForce RTX™ 3060 12GB GDDR6",
+                    model: "Dual GeForce RTX™ 3060",
+                    graphicEngine: "NVIDIA® GeForce RTX™ 3060",
+                    busStandard: "PCI Express 4.0",
+                    openGL: "OpenGL®4.6",
+                    videoMemory: "12GB GDDR6",
+                    engineClock: "OC Mode - 1807 MHz (Boost Clock)",
+                    gamingMode: "1777 MHz (Boost Clock)",
+                    cudaCore: "3584",
+                    memorySpeed: "15 Gbps"
+                },
+                "Radeon RX 6600": {
+                    title: "Radeon™ RX 6600 V2 8GB GDDR6",
+                    model: "DUAL-RX6600-8G-V2",
+                    graphicEngine: "AMD Radeon™ RX 6600",
+                    busStandard: "PCI Express 4.0",
+                    openGL: "OpenGL®4.6",
+                    videoMemory: "8GB GDDR6",
+                    engineClock: "OC mode: up to 2491 MHz (Boost Clock)",
+                    gameClock: "up to 2064 MHz",
+                    streamProcessors: "1792",
+                    memorySpeed: "14 Gbps"
+                }
+            };
+
+            return dummyData[searchQuery] || {};
+        }
+
+        function displayComponentInfo(componentId, info) {
+            const componentElement = document.getElementById(componentId);
+            componentElement.innerHTML = `
+                <div class="component-title">${info.title || "Component Title"}</div>
+                <ul class="specs">
+                    ${Object.entries(info).map(([key, value]) => key !== 'title' ? `<li><strong>${key}:</strong> ${value}</li>` : '').join('')}
+                </ul>
+            `;
+        }
+
+        function updateComparisonTitle(component1, component2) {
+            const comparisonTitleElement = document.getElementById('comparisonTitle');
+            comparisonTitleElement.innerHTML = `
+                <span class="highlight-blue">${component1}</span> vs <span>${component2}</span>
+            `;
+            comparisonTitleElement.style.display = 'block';
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInputs = document.querySelectorAll(".search-container input");
+
+            let component1Title = '';
+            let component2Title = '';
+
+            searchInputs.forEach((input, index) => {
+                input.addEventListener("change", (event) => {
+                    const searchQuery = event.target.value;
+                    const componentId = `component${index + 1}`;
+                    const componentInfo = fetchComponentInfo(searchQuery);
+                    displayComponentInfo(componentId, componentInfo);
+
+                    if (index === 0) {
+                        component1Title = componentInfo.title || '';
+                    } else {
+                        component2Title = componentInfo.title || '';
+                    }
+
+                    if (component1Title && component2Title) {
+                        updateComparisonTitle(component1Title, component2Title);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

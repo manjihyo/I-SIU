@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Building Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #2a2a2a;
+            color: #fff;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: #fff;
+            margin-right: 20px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav button {
+            color: #fff;
+            background-color: #444;
+            border: 2px solid #555;
+            border-radius: 5px;
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        nav button:hover {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        nav button.active {
+            background-color: #00cccc;
+            border-color: #00cccc;
+        }
+
+        main {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .slot-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slot-label {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+
+        .slot {
+            background: #444;
+            border: 2px dashed #777;
+            height: 150px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .slot .component {
+            background: #555;
+            color: white;
+            border: 1px solid #888;
+            padding: 10px;
+            cursor: grab;
+            border-radius: 5px;
+            text-align: center;
+            position: relative;
+        }
+
+        .component {
+            background: #555;
+            border: 1px solid #888;
+            padding: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .component:hover {
+            background: #666;
+        }
+
+        .component-list {
+            display: none;
+            flex-direction: column;
+            background: #333;
+            border: 1px solid #888;
+            padding: 10px;
+            position: absolute;
+            z-index: 10;
+            top: 60px;
+            right: 20px;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .component-list.visible {
+            display: flex;
+        }
+
+        #component-items .component {
+            margin: 5px;
+            cursor: grab;
+        }
+
+        aside {
+            width: 250px;
+            margin-left: 20px;
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid #444;
+        }
+
+        .done-button {
+            background: #00bfff;
+            border: none;
+            padding: 0.5em 1em;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .done-button:hover {
+            background: #0099cc;
+        }
+
+        #back-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+            background: #555;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        #back-button:hover {
+            background: #666;
+        }
+
+        .remove-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #f44336;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 50%;
+        }
+
+        .remove-button:hover {
+            background: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">👁️</div>
+            <nav>
+                <button class="nav-button" onclick="window.location.href='home.html'">HOME</button>
+                <button class="nav-button active" onclick="window.location.href='create.html'">CREATE</button>
+                <button class="nav-button" onclick="window.location.href='prebuilt.html'">PRE-BUILT PC</button>
+                <button class="nav-button" onclick="window.location.href='compare.html'">COMPARE PARTS</button>
+            </nav>
+        </header>
+        <main>
+            <div class="slots" id="slots">
+                <div class="slot-wrapper">
+                    <div class="slot-label">CPU</div>
+                    <div class="slot" data-type="CPU"></div>
+                </div>
+                <div class="slot-wrapper">
+                    <div class="slot-label">GPU</div>
+                    <div class="slot" data-type="GPU"></div>
+                </div>
+                <div class="slot-wrapper">
+                    <div class="slot-label">RAM</div>
+                    <div class="slot" data-type="RAM"></div>
+                </div>
+                <div class="slot-wrapper">
+                    <div class="slot-label">PSU</div>
+                    <div class="slot" data-type="PSU"></div>
+                </div>
+                <div class="slot-wrapper">
+                    <div class="slot-label">Storage</div>
+                    <div class="slot" data-type="Storage"></div>
+                </div>
+                <div class="slot-wrapper">
+                    <div class="slot-label">Motherboard</div>
+                    <div class="slot" data-type="Motherboard"></div>
+                </div>
+                <div class="slot-wrapper">
+                    <div class="slot-label">Cooler</div>
+                    <div class="slot" data-type="Cooler"></div>
+                </div>
+                <div class="slot-wrapper">
+                    <div class="slot-label">Chassis</div>
+                    <div class="slot" data-type="Chassis"></div>
+                </div>
+            </div>
+            <aside>
+                <h2>Components</h2>
+                <div class="component" data-type="CPU">Central Processing Unit (CPU)</div>
+                <div class="component" data-type="GPU">Graphics Card</div>
+                <div class="component" data-type="RAM">RAM</div>
+                <div class="component" data-type="PSU">Power Supply</div>
+                <div class="component" data-type="Storage">Storage</div>
+                <div class="component" data-type="Motherboard">Motherboard</div>
+                <div class="component" data-type="Cooler">Coolers</div>
+                <div class="component" data-type="Chassis">Chassis</div>
+            </aside>
+            <div class="component-list" id="component-list">
+                <h2 id="component-title">Components</h2>
+                <div id="component-items"></div>
+                <button id="back-button">Back</button>
+            </div>
+        </main>
+        <footer>
+            <button class="done-button" onclick="window.location.href='feedback.html'">Done</button>
+            <span id="components-count">0/8 components</span>
+        </footer>
+    </div>
+    <script>
+        const components = document.querySelectorAll('.component');
+        const slots = document.querySelectorAll('.slot');
+        const componentsCount = document.getElementById('components-count');
+        const componentList = document.getElementById('component-list');
+        const componentItems = document.getElementById('component-items');
+        const componentTitle = document.getElementById('component-title');
+        const backButton = document.getElementById('back-button');
+        let count = 0;
+
+        const componentsData = {
+            CPU: ['Intel i9', 'AMD Ryzen 9'],
+            GPU: ['GeForce RTX 3060', 'Radeon RX 6600', 'Radeon RX 7600 XT'],
+            RAM: ['Corsair 16GB', 'G.Skill 32GB'],
+            PSU: ['THERMALTAKE Litepower 550W', 'THERMALTAKE Litepower 650W', 'SILVERSTONE SST-ST60F-ES230 600W'],
+            Storage: ['Samsung SSD 1TB', 'Seagate HDD 2TB'],
+            Motherboard: ['ASUS ROG', 'MSI B450'],
+            Cooler: ['Noctua NH-D15', 'Corsair H100i'],
+            Chassis: ['NZXT H510', 'Corsair 4000D']
+        };
+
+        const incompatibilityRules = {
+            'Intel i9': ['GeForce RTX 3060', 'Corsair 16GB'],
+            'AMD Ryzen 9': ['Radeon RX 7600 XT', 'G.Skill 32GB'],
+            'GeForce RTX 3060': ['Intel i9', 'THERMALTAKE Litepower 650W'],
+            'Radeon RX 6600': ['Corsair 16GB'],
+            'Radeon RX 7600 XT': ['AMD Ryzen 9', 'SILVERSTONE SST-ST60F-ES230 600W'],
+            'Corsair 16GB': ['Radeon RX 6600'],
+            'G.Skill 32GB': ['AMD Ryzen 9'],
+            'THERMALTAKE Litepower 550W': ['NZXT H510'],
+            'THERMALTAKE Litepower 650W': ['GeForce RTX 3060'],
+            'SILVERSTONE SST-ST60F-ES230 600W': ['Radeon RX 7600 XT'],
+            'Samsung SSD 1TB': ['Corsair H100i'],
+            'Seagate HDD 2TB': ['Noctua NH-D15'],
+            'Noctua NH-D15': ['Seagate HDD 2TB'],
+            'Corsair H100i': ['Samsung SSD 1TB'],
+            'NZXT H510': ['THERMALTAKE Litepower 550W'],
+            'Corsair 4000D': ['ASUS ROG']
+        };
+
+        let usedParts = [];
+
+        components.forEach(component => {
+            component.addEventListener('click', () => {
+                showComponentList(component.dataset.type);
+            });
+        });
+
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', dragOver);
+            slot.addEventListener('drop', drop);
+        });
+
+        backButton.addEventListener('click', () => {
+            componentList.classList.remove('visible');
+        });
+
+        function showComponentList(type) {
+            componentTitle.textContent = type;
+            componentItems.innerHTML = '';
+            componentsData[type].forEach(item => {
+                const componentItem = document.createElement('div');
+                componentItem.className = 'component';
+                componentItem.textContent = item;
+                componentItem.draggable = true;
+                componentItem.dataset.type = type;
+                componentItem.addEventListener('dragstart', dragStart);
+                componentItems.appendChild(componentItem);
+            });
+            componentList.classList.add('visible');
+        }
+
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.textContent);
+            e.dataTransfer.setData('type', e.target.dataset.type);
+            e.dataTransfer.effectAllowed = 'move';
+            console.log(`Dragging started for ${e.target.textContent}`);
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function checkIncompatibility(part, usedParts) {
+            if (incompatibilityRules[part]) {
+                for (let i = 0; i < usedParts.length; i++) {
+                    if (incompatibilityRules[part].includes(usedParts[i])) {
+                        return usedParts[i];
+                    }
+                }
+            }
+            return null;
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const data = e.dataTransfer.getData('text/plain');
+            const type = e.dataTransfer.getData('type');
+            const slotType = e.target.dataset.type;
+            console.log(`Attempting to drop ${data} into ${slotType}`);
+
+            if (usedParts.includes(data)) {
+                alert('Component is already used');
+                console.log(`Component ${data} is already used.`);
+                return;
+            }
+
+            const incompatiblePart = checkIncompatibility(data, usedParts);
+            if (incompatiblePart) {
+                alert(`Component ${data} is not compatible with ${incompatiblePart}`);
+                console.log(`Component ${data} is not compatible with ${incompatiblePart}`);
+                return;
+            }
+
+            if (slotType === type && !e.target.hasChildNodes()) {
+                const component = document.createElement('div');
+                component.className = 'component';
+                component.textContent = data;
+
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-button';
+                removeButton.textContent = 'X';
+                removeButton.addEventListener('click', () => {
+                    e.target.removeChild(component);
+                    usedParts = usedParts.filter(part => part !== data);
+                    count--;
+                    componentsCount.textContent = `${count}/8 components`;
+                    console.log(`Component ${data} removed. Used parts: ${usedParts}`);
+                });
+
+                component.appendChild(removeButton);
+                e.target.appendChild(component);
+                usedParts.push(data);
+                count++;
+                componentsCount.textContent = `${count}/8 components`;
+                componentList.classList.remove('visible');
+                console.log(`Component ${data} added. Used parts: ${usedParts}`);
+            } else {
+                alert('Component is not compatible with this slot');
+                console.log(`Component ${data} is not compatible with the slot ${slotType}`);
+            }
+        }
+    </script>
+</body>
+</html>

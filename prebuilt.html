@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Built PC Recommendations</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+        }
+
+        .logo img {
+            font-size: 24px;
+            color: #fff;
+            margin-right: 20px;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-button {
+            color: #fff;
+            background-color: #444;
+            border: 2px solid #555;
+            border-radius: 5px;
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .nav-button.active {
+            background-color: #00cccc;
+            border-color: #00cccc;
+        }
+
+        .done-button {
+            background-color: #888;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-areas: 
+                "a b c"
+                "a d e"
+                "f g g";
+            grid-gap: 10px;
+            flex: 3;
+        }
+
+        .grid-item {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px dashed #777;
+        }
+
+        .grid-item:nth-child(1) {
+            grid-area: a;
+        }
+
+        .grid-item:nth-child(2) {
+            grid-area: b;
+        }
+
+        .grid-item:nth-child(3) {
+            grid-area: c;
+        }
+
+        .grid-item:nth-child(4) {
+            grid-area: d;
+        }
+
+        .grid-item:nth-child(5) {
+            grid-area: e;
+        }
+
+        .grid-item:nth-child(6) {
+            grid-area: f;
+        }
+
+        .grid-item:nth-child(7) {
+            grid-area: g;
+        }
+
+        .recommendations {
+            flex: 1;
+            background-color: #444;
+            padding: 20px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #777;
+        }
+
+        .recommendations h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recommend-button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px 0;
+            cursor: pointer;
+            width: 80%;
+            text-align: center;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .recommend-button:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <div class="logo">👁️</div>
+        </div>
+        <div class="menu">
+            <button id="home" class="nav-button">HOME</button>
+            <button id="create" class="nav-button">CREATE</button>
+            <button id="prebuilt" class="nav-button active">PRE-BUILT PC</button>
+            <button id="compare" class="nav-button">COMPARE PARTS</button>
+        </div>
+        <button id="done" class="done-button">Done</button>
+    </div>
+    <div class="container">
+        <div class="grid">
+            <div class="grid-item" data-type="CPU"></div>
+            <div class="grid-item" data-type="GPU"></div>
+            <div class="grid-item" data-type="RAM"></div>
+            <div class="grid-item" data-type="PSU"></div>
+            <div class="grid-item" data-type="Storage"></div>
+            <div class="grid-item" data-type="Motherboard"></div>
+            <div class="grid-item" data-type="Cooler"></div>
+            <div class="grid-item" data-type="Chassis"></div>
+        </div>
+        <div class="recommendations">
+            <h2>Pre-Built PC Recommendation for Variety of Users</h2>
+            <button class="recommend-button" data-category="gamers">GAMERS</button>
+            <button class="recommend-button" data-category="students">STUDENTS</button>
+            <button class="recommend-button" data-category="business">BUSINESS</button>
+            <button class="recommend-button" data-category="casual">CASUAL</button>
+            <button class="recommend-button" data-category="highend">HIGH-END</button>
+            <button class="recommend-button" data-category="budget">BUDGET-FRIENDLY</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const navButtons = {
+                home: 'home.html',
+                create: 'create.html',
+                prebuilt: 'prebuilt.html',
+                compare: 'compare.html'
+            };
+
+            Object.keys(navButtons).forEach(id => {
+                const button = document.getElementById(id);
+                button.addEventListener('click', () => {
+                    window.location.href = navButtons[id];
+                });
+            });
+
+
+            const doneButton = document.getElementById('done');
+            doneButton.addEventListener('click', () => {
+                alert('You have completed the selection.');
+
+            });
+
+
+            const recommendationButtons = document.querySelectorAll('.recommend-button');
+            recommendationButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    fillSlots(category);
+                });
+            });
+
+            const recommendedComponents = {
+                gamers: {
+                    CPU: 'Intel i9',
+                    GPU: 'GeForce RTX 3060',
+                    RAM: 'Corsair 16GB',
+                    PSU: 'THERMALTAKE Litepower 650W',
+                    Storage: 'Samsung SSD 1TB',
+                    Motherboard: 'ASUS ROG',
+                    Cooler: 'Noctua NH-D15',
+                    Chassis: 'NZXT H510'
+                },
+                students: {
+                    CPU: 'AMD Ryzen 9',
+                    GPU: 'Radeon RX 6600',
+                    RAM: 'G.Skill 32GB',
+                    PSU: 'SILVERSTONE SST-ST60F-ES230 600W',
+                    Storage: 'Seagate HDD 2TB',
+                    Motherboard: 'MSI B450',
+                    Cooler: 'Corsair H100i',
+                    Chassis: 'Corsair 4000D'
+                },
+                business: {
+                    CPU: 'Intel i9',
+                    GPU: 'Radeon RX 6600',
+                    RAM: 'Corsair 16GB',
+                    PSU: 'THERMALTAKE Litepower 550W',
+                    Storage: 'Samsung SSD 1TB',
+                    Motherboard: 'ASUS ROG',
+                    Cooler: 'Noctua NH-D15',
+                    Chassis: 'NZXT H510'
+                },
+                casual: {
+                    CPU: 'AMD Ryzen 9',
+                    GPU: 'GeForce RTX 3060',
+                    RAM: 'G.Skill 32GB',
+                    PSU: 'THERMALTAKE Litepower 650W',
+                    Storage: 'Seagate HDD 2TB',
+                    Motherboard: 'MSI B450',
+                    Cooler: 'Corsair H100i',
+                    Chassis: 'Corsair 4000D'
+                },
+                highend: {
+                    CPU: 'Intel i9',
+                    GPU: 'GeForce RTX 3060',
+                    RAM: 'G.Skill 32GB',
+                    PSU: 'SILVERSTONE SST-ST60F-ES230 600W',
+                    Storage: 'Samsung SSD 1TB',
+                    Motherboard: 'ASUS ROG',
+                    Cooler: 'Noctua NH-D15',
+                    Chassis: 'NZXT H510'
+                },
+                budget: {
+                    CPU: 'AMD Ryzen 9',
+                    GPU: 'Radeon RX 6600',
+                    RAM: 'Corsair 16GB',
+                    PSU: 'THERMALTAKE Litepower 550W',
+                    Storage: 'Seagate HDD 2TB',
+                    Motherboard: 'MSI B450',
+                    Cooler: 'Corsair H100i',
+                    Chassis: 'Corsair 4000D'
+                }
+            };
+
+
+            function fillSlots(category) {
+                const components = recommendedComponents[category];
+                if (components) {
+                    Object.keys(components).forEach(componentType => {
+                        const slot = document.querySelector(`.grid-item[data-type="${componentType}"]`);
+                        if (slot) {
+                            slot.textContent = components[componentType];
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
